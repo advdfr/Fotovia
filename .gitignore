@@ -1,7 +1,8 @@
-# Gradle
+# Gradle / build output
 .gradle/
 build/
 **/build/
+app/release/
 
 # Local machine config
 local.properties
@@ -19,15 +20,11 @@ local.properties
 *.log
 captures/
 
-# OS files
-.DS_Store
-Thumbs.db
-
-# Secrets / signing
+# Signing / secrets
 *.jks
 *.keystore
 keystore.properties
 
-# Environment files
+# Environment
 .env
 .env.*
