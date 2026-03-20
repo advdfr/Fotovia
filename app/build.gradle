@@ -1,0 +1,103 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+
+android {
+    namespace 'com.tools.pixart'
+    compileSdkVersion 35
+
+    defaultConfig {
+        applicationId 'com.tools.pixart'
+        minSdkVersion 24
+        targetSdkVersion 35
+        versionCode 1
+        versionName '1.0'
+        multiDexEnabled true
+
+        renderscriptTargetApi 21
+        renderscriptSupportModeEnabled true
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    packaging {
+        jniLibs {
+            // This ensures native libraries are aligned to 16 KB boundaries
+            // and stored uncompressed in the APK, which is required for Android 15+ 16 KB page support.
+            useLegacyPackaging = false
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // AndroidX & UI
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    // Image Processing & Loading
+    implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+
+    // RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    // Color Pickers
+    implementation 'com.github.QuadFlask:colorpicker:0.0.15'
+    implementation 'com.github.yukuku:ambilwarna:2.0.1'
+
+    // Ads
+    implementation 'com.google.android.gms:play-services-ads:23.1.0'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // Firebase (use BOM; do NOT set versions individually)
+    implementation platform('com.google.firebase:firebase-bom:33.1.0')
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
+
+    // Gemini AI
+    implementation('com.google.ai.client.generativeai:generativeai:0.7.0') {
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+
+    // TensorFlow (old; keep only if you really need it)
+    implementation 'org.tensorflow:tensorflow-android:1.13.1'
+
+    implementation project(path: ':sticker')
+}
+
+// If you still have Kotlin duplicate stdlib issues, do this OUTSIDE dependencies
+configurations.all {
+    exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7"
+    exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk8"
+}

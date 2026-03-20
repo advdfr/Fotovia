@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B3000000"
+    android:orientation="vertical">
+
+    <HorizontalScrollView
+        android:id="@+id/horizontal_scroll_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@+id/add_text_color_picker_recycler_view"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/change_font_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_border_text_view"
+                android:fontFamily="Poppins"
+                android:padding="10dp"
+                android:text="Poppins Medium"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/add_text_color_picker_recycler_view"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/change_font_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_border_text_view"
+                android:fontFamily="Poppins Semi bold"
+                android:padding="10dp"
+                android:text="Poppins Semi"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/add_text_color_picker_recycler_view"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/change_font_tv3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_border_text_view"
+                android:padding="10dp"
+                android:text="Minya"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/add_text_color_picker_recycler_view"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/change_font_tv4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_border_text_view"
+                android:padding="10dp"
+                android:text="Karumbi Regular"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/add_text_color_picker_recycler_view"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/change_font_tv5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_border_text_view"
+                android:padding="10dp"
+                android:text="Helvetica Bold"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/add_text_color_picker_recycler_view"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/change_font_tv6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_border_text_view"
+                android:padding="10dp"
+                android:text="Price Down"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/add_text_color_picker_recycler_view"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/change_font_tv7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_border_text_view"
+                android:padding="10dp"
+                android:text="Roboto Bold"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/add_text_color_picker_recycler_view"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/change_font_tv8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_border_text_view"
+                android:padding="10dp"
+                android:text="Roboto Medium"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/add_text_color_picker_recycler_view"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/change_font_tv9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_border_text_view"
+                android:padding="10dp"
+                android:text="Roboto Regular"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/add_text_color_picker_recycler_view"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+
+    <EditText
+        android:id="@+id/add_text_edit_text"
+        style="@style/EditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:focusable="true"
+        android:focusedByDefault="true"
+        android:gravity="center"
+        android:inputType="textMultiLine"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@id/horizontal_scroll_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/cancel_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="15dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/edit_cancel_button_"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/add_text_done_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="0sp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="15dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/done_button_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/add_text_color_picker_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="27dp"
+        android:orientation="horizontal"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/cancel_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/color_picker_item_list" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

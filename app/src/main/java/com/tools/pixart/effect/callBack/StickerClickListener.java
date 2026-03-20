@@ -1,0 +1,9 @@
+package com.tools.pixart.effect.callBack;
+
+import android.view.View;
+
+
+public interface StickerClickListener {
+    public void onItemClick(View v, int position);
+
+}
