@@ -32,15 +32,20 @@ public class MyExceptionHandlerPix implements Thread.UncaughtExceptionHandler {
 //        add error into intent
 //        intent.putExtra("report", ex.getMessage());
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pendingIntent;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                pendingIntent = PendingIntent.getActivity(MainApplication.getContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
-            } else  {
-                pendingIntent = PendingIntent.getActivity(MainApplication.getContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
-            }
-            AlarmManager mgr = (AlarmManager) MainApplication.getContext().getSystemService(Context.ALARM_SERVICE);
-            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 10, pendingIntent);
-            //activity.finish();
+                        int pendingIntentFlags = PendingIntent.FLAG_ONE_SHOT;
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    pendingIntentFlags |= PendingIntent.FLAG_IMMUTABLE;
+}
+
+PendingIntent pendingIntent = PendingIntent.getActivity(
+        MainApplication.getContext(),
+        0,
+        intent,
+        pendingIntentFlags
+);
+
+AlarmManager mgr = (AlarmManager) MainApplication.getContext().getSystemService(Context.ALARM_SERVICE);
+mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 10, pendingIntent);
             System.exit(2);
         }
     }

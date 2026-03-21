@@ -1,8 +1,5 @@
 package com.tools.pixart.effect.activity;
 
-import jp.co.cyberagent.android.gpuimage.GPUImage;
-import jp.co.cyberagent.android.gpuimage.filter.*;
-
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 import com.google.ai.client.generativeai.type.Content;
@@ -21,6 +18,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -489,19 +489,15 @@ public class PixLabActivity extends BaseActivity implements View.OnClickListener
                 List<Bitmap> previews = new ArrayList<>();
                 List<String> names = new ArrayList<>();
 
-                GPUImage previewEngine = new GPUImage(PixLabActivity.this);
-                previewEngine.setImage(thumbBitmaps);
-
-                previews.add(thumbBitmaps);
+                previews.add(applyPixFilter(thumbBitmaps, 0));
                 names.add("Normal");
 
-                previewEngine.setFilter(new GPUImageSepiaToneFilter());
-                previews.add(previewEngine.getBitmapWithFilterApplied());
+                previews.add(applyPixFilter(thumbBitmaps, 1));
                 names.add("Sepia");
 
                 runOnUiThread(() -> {
                     filtersForegroundAdapter = new FiltersForegroundAdapter(previews, names, position -> {
-                        applyGPUFilter(position);
+                        applyPixFilterSelection(position);
                     });
                     mRecyclerForegroundFilter.setAdapter(filtersForegroundAdapter);
                 });
@@ -518,17 +514,37 @@ public class PixLabActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    private void applyGPUFilter(int position) {
-        GPUImage mainEngine = new GPUImage(this);
-        mainEngine.setImage(bmpPic);
-        if (position == 0) {
-            mainEngine.setFilter(new GPUImageFilter());
-        } else if (position == 1) {
-            mainEngine.setFilter(new GPUImageSepiaToneFilter());
+    private void applyPixFilterSelection(int position) {
+        filteredForegroundBitmap3 = applyPixFilter(bmpPic, position);
+        if (filteredForegroundBitmap3 == null) {
+            return;
         }
-        filteredForegroundBitmap3 = mainEngine.getBitmapWithFilterApplied();
         Bitmap scaled = Bitmap.createScaledBitmap(filteredForegroundBitmap3, displayWidth, displayWidth, true);
         mMovImage.setImageBitmap(scaled);
+    }
+
+    private Bitmap applyPixFilter(Bitmap source, int position) {
+        if (source == null) {
+            return null;
+        }
+        if (position == 1) {
+            Bitmap output = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(output);
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            ColorMatrix sepiaMatrix = new ColorMatrix();
+            sepiaMatrix.setSaturation(0);
+            ColorMatrix colorScale = new ColorMatrix(new float[]{
+                    1f, 0f, 0f, 0f, 20f,
+                    0f, 1f, 0f, 0f, 10f,
+                    0f, 0f, 0.8f, 0f, 0f,
+                    0f, 0f, 0f, 1f, 0f
+            });
+            sepiaMatrix.postConcat(colorScale);
+            paint.setColorFilter(new ColorMatrixColorFilter(sepiaMatrix));
+            canvas.drawBitmap(source, 0, 0, paint);
+            return output;
+        }
+        return source.copy(Bitmap.Config.ARGB_8888, true);
     }
 
 
