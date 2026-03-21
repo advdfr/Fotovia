@@ -522,29 +522,22 @@ public class HomeActivity extends BaseActivity {
         } else if (resultCode == RESULT_OK && data != null && requestCode == REQUEST_CODE_CROPPING && (selectedFeatures == FEATURES.PIX_LAB_EFFECT || selectedFeatures == FEATURES.AI_MAGIC)) {
             if (data.hasExtra("croppedUri")) {
                 mSelectedImageUri = data.getParcelableExtra("croppedUri");
-                try {
-                    Bitmap bitmap = Constants.getBitmapFromUriDrip(HomeActivity.this, mSelectedImageUri, 1080, 1080);
-                    if (bitmap != null) {
-                        PixLabActivity.setFaceBitmap(bitmap);
-
-                        FullScreenAdManager.fullScreenAdsCheckPref(HomeActivity.this, FullScreenAdManager.ALL_PREFS.ATTR_ON_FIRST_PIX_SCREEN, new FullScreenAdManager.GetBackPointer() {
-                            @Override
-                            public void returnAction() {
-                                Intent intent = new Intent(HomeActivity.this, PixLabActivity.class);
-                                intent.putExtra(Constants.KEY_FROM_MAIN, getString(R.string.txt_gallery));
-                                if (selectedFeatures == FEATURES.AI_MAGIC) {
-                                    intent.putExtra("startGemini", true);
-                                }
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.enter, R.anim.exit);
+                if (mSelectedImageUri != null) {
+                    FullScreenAdManager.fullScreenAdsCheckPref(HomeActivity.this, FullScreenAdManager.ALL_PREFS.ATTR_ON_FIRST_PIX_SCREEN, new FullScreenAdManager.GetBackPointer() {
+                        @Override
+                        public void returnAction() {
+                            Intent intent = new Intent(HomeActivity.this, PixLabActivity.class);
+                            intent.putExtra(Constants.KEY_FROM_MAIN, getString(R.string.txt_gallery));
+                            intent.putExtra(PixLabActivity.EXTRA_TEMP_IMAGE_URI, mSelectedImageUri.toString());
+                            if (selectedFeatures == FEATURES.AI_MAGIC) {
+                                intent.putExtra("startGemini", true);
                             }
-                        });
-                    } else {
-                        Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.enter, R.anim.exit);
+                        }
+                    });
+                } else {
+                    Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
                 }
             }
 

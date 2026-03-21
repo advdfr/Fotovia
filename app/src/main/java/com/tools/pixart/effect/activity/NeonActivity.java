@@ -943,9 +943,9 @@ public class NeonActivity extends BaseActivity implements MenuItemClickLister, O
 
                     Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
 
-                    FileOutputStream fos = (FileOutputStream) contentResolver.openOutputStream(Objects.requireNonNull(uri));
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                    Objects.requireNonNull(fos);
+                    try (java.io.OutputStream fos = Objects.requireNonNull(contentResolver.openOutputStream(Objects.requireNonNull(uri)))) {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    }
                     if (uri != null)
                         savedImageUri = uri;
                     notifyMediaScannerService(NeonActivity.this, uri.getPath());
@@ -962,10 +962,10 @@ public class NeonActivity extends BaseActivity implements MenuItemClickLister, O
                     }
                     oldSavedFileName = fileName;
 
-                    FileOutputStream out = new FileOutputStream(file);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                    out.flush();
-                    out.close();
+                    try (FileOutputStream out = new FileOutputStream(file)) {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                        out.flush();
+                    }
                     //
                     Uri uri = SupportedClass.addImageToGallery(NeonActivity.this, file.getAbsolutePath());
                     if (uri != null)

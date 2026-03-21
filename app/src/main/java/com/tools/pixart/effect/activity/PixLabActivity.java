@@ -93,6 +93,7 @@ import java.util.concurrent.Executors;
 
 
 public class PixLabActivity extends BaseActivity implements View.OnClickListener {
+    public static final String EXTRA_TEMP_IMAGE_URI = "pixlab_temp_image_uri";
 
     public ArrayList<PathModelPix> arrIcon, arrMask;
     public Animation slideUpAnimation, slideDownAnimation;
@@ -143,6 +144,22 @@ public class PixLabActivity extends BaseActivity implements View.OnClickListener
         bmpPic = bitmap;
     }
 
+    private Bitmap getInputBitmap() {
+        String tempImageUri = getIntent().getStringExtra(EXTRA_TEMP_IMAGE_URI);
+        if (tempImageUri != null && !tempImageUri.trim().isEmpty()) {
+            try {
+                Uri uri = Uri.parse(tempImageUri);
+                Bitmap bitmap = Constants.getBitmapFromUriDrip(this, uri, 1080, 1080);
+                if (bitmap != null) {
+                    return bitmap;
+                }
+            } catch (Exception e) {
+                Log.e("PixLabActivity", "Unable to load temp PixLab image", e);
+            }
+            return null;
+        }
+        return bmpPic;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,6 +224,8 @@ public class PixLabActivity extends BaseActivity implements View.OnClickListener
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.txt_loading));
         progressDialog.setCancelable(false);
+
+        bmpPic = getInputBitmap();
 
         if (bmpPic != null) {
             progressDialog.show();
@@ -300,6 +319,7 @@ public class PixLabActivity extends BaseActivity implements View.OnClickListener
             });
 
         } else {
+            Toast.makeText(this, getString(R.string.please_try_again), Toast.LENGTH_SHORT).show();
             finish();
         }
 

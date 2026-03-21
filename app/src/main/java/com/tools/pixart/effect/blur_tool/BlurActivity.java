@@ -24,10 +24,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -56,8 +52,9 @@ import com.tools.pixart.effect.activity.BaseActivity;
 import com.tools.pixart.effect.activity.ShareActivity;
 import com.tools.pixart.effect.ads.FullScreenAdManager;
 import com.tools.pixart.effect.support.Constants;
-import com.tools.pixart.effect.support.SupportedClass;
+import com.tools.pixart.effect.support.FastBlur;
 import com.tools.pixart.effect.support.MyExceptionHandlerPix;
+import com.tools.pixart.effect.support.SupportedClass;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -108,17 +105,9 @@ public class BlurActivity extends BaseActivity implements OnClickListener, OnSee
     }
 
     public static Bitmap blur(Context context, Bitmap bitmap, int i) {
-        Bitmap copy = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Bitmap createBitmap = Bitmap.createBitmap(copy);
-        RenderScript create = RenderScript.create(context);
-        ScriptIntrinsicBlur create2 = ScriptIntrinsicBlur.create(create, Element.U8_4(create));
-        Allocation createFromBitmap = Allocation.createFromBitmap(create, copy);
-        Allocation createFromBitmap2 = Allocation.createFromBitmap(create, createBitmap);
-        create2.setRadius((float) i);
-        create2.setInput(createFromBitmap);
-        create2.forEach(createFromBitmap2);
-        createFromBitmap2.copyTo(createBitmap);
-        return createBitmap;
+        Bitmap source = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap blurred = new FastBlur().processBlur(source, 1.0f, Math.max(1, i));
+        return blurred != null ? blurred : source;
     }
 
     public static Bitmap blurify(Bitmap bitmap, int i) {
@@ -592,9 +581,9 @@ public class BlurActivity extends BaseActivity implements OnClickListener, OnSee
 
                             Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
 
-                            FileOutputStream fos = (FileOutputStream) contentResolver.openOutputStream(Objects.requireNonNull(uri));
-                            tiv.drawingBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                            Objects.requireNonNull(fos);
+                            try (java.io.OutputStream fos = Objects.requireNonNull(contentResolver.openOutputStream(Objects.requireNonNull(uri)))) {
+                                tiv.drawingBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            }
                             if (uri != null) {
                                 Intent intent = new Intent(BlurActivity.this, ShareActivity.class);
                                 intent.putExtra(Constants.KEY_URI_IMAGE, uri.toString());
@@ -615,10 +604,10 @@ public class BlurActivity extends BaseActivity implements OnClickListener, OnSee
                             }
                             oldSavedFileName = fileName;
 
-                            FileOutputStream out = new FileOutputStream(file);
-                            tiv.drawingBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                            out.flush();
-                            out.close();
+                            try (FileOutputStream out = new FileOutputStream(file)) {
+                                tiv.drawingBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                                out.flush();
+                            }
                             //
                             Uri uri = SupportedClass.addImageToGallery(BlurActivity.this, file.getAbsolutePath());
                             if (uri != null) {

@@ -15,8 +15,6 @@ android {
         versionName '1.0'
         multiDexEnabled true
 
-        renderscriptTargetApi 21
-        renderscriptSupportModeEnabled true
     }
 
     buildFeatures {
